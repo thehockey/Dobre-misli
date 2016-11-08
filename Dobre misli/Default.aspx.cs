@@ -9,21 +9,29 @@ namespace Dobre_misli
 {
     public partial class Default : System.Web.UI.Page
     {
-        static Array stavki;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Application["Misli"] == null)
+            {
+                Application["Misli"] = new List<string>();
+            }
         }
 
         protected void dodajMisel_Click(object sender, EventArgs e)
         {
-            String text = misel.Text;
+            // add to application variable
+            var misli = (List<string>)Application["Misli"];
+            misli.Insert(0, misel.Text);
 
-            Label l = new Label();
-            l.Text = text;
 
+            //create controls
+            foreach (var text in misli)
+            {
+                var label = new Label();
+                label.Text = "\"" + text + "\"" + new HtmlString("<br />");
+                FindControl("misli").Controls.Add(label);
+            }
         }
     }
-    
+
 }
